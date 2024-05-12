@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="custom-select.css">
+</head>
+
+<body>
+
+    <div id="page-header">
+
+        <div id="header-selects">
+
+            <div id="select-set" class="custom-select">
+                <div class="select-input" tabindex="0" data-clicked="0">
+                    <div class="select-label">Choose set...</div>
+                    <div class="select-arrow">
+                        <i class="fa fa-caret-down" aria-hidden="true"></i>
+                    </div>
+                </div>
+
+                <div class="select-items" tabindex="0">
+                    <option value="city" selected>City</option>
+                    <option value="kitchen">Kitchen</option>
+                </div>
+            </div>
+
+            <div id="select-mode" class="custom-select">
+                <div class="select-input" tabindex="0" data-clicked="0">
+                    <div class="select-label">Choose mode...</div>
+                    <div class="select-arrow">
+                        <i class="fa fa-caret-down" aria-hidden="true"></i>
+                    </div>
+                </div>
+
+                <div class="select-items" tabindex="0">
+                    <option value="practice" selected>Practice</option>
+                    <option value="test">Test</option>
+                </div>
+            </div>
+            
+        </div>                 
+
+        <div id="header-logo">
+            <img class="name" src="/home/adam/Desktop/Programowanie/WebDev/strona_włoski/logo/logo.svg" alt="img fucked up">
+        </div>
+
+        <div id="header-buttnos">
+            <div class="header-btn btn-1">Contact us</div>
+            <div class="header-btn btn-2">Donate</div>
+            <div class="header-btn btn-3">Log in</div>
+            <div class="header-btn btn-4">Sign in</div>
+        </div>
+
+    </div>
+
+    <div id="page-content">
+        <div id="cards-container"></div>    
+    </div>
+
+    <div id="page-footer">
+        <p>Wersja testowa</p>
+    </div>
+
+</body>
+
+<script src="script.js"></script>
+
+<script>
+// Manage custom select elements
+
+
+/* Custom select functions:
+1) Open/close select list (when clicked on element)
+1a - should also work with keyboard (alt + key down)
+2) Close select list (when clicked outside of element)
+3) Select option from the list
+    3a) Effect from item selection (run function - e.g. load content)
++ make custom select an easily reproducable component
+*/
+
+/* Kolejne kroki: 
+Page header
+1) select- musi działać przy wielu selectach
+2) Page logo
+3) Change buttons to anchors + style
+n) Format page header
+*/
+
+function createCustomSelect (selectId, inputLabel, optionsList = [], callBackFn = null) {
+
+    selectId = 'select-set';
+    inputLabel = 'Choose set...';
+
+    temp = document.createElement('div');
+    temp.innerHTML = 
+    `<div id="${selectId}" class="custom-select">
+        <div class="select-input" tabindex="0" data-clicked="0">
+            <div class="select-label">${inputLabel}</div>
+            <div class="select-arrow">
+                <i class="fa fa-caret-down" aria-hidden="true"></i>
+            </div>
+        </div>
+
+        <div class="select-items" tabindex="0"></div>
+    </div>
+    `;
+
+    customSelect = temp.querySelector('.custom-select');
+    selectInput = customSelect.querySelector('.select-input');
+    itemsList = customSelect.querySelector('.select-items');
+
+    /* Add options */
+    optionsList = [
+        ['city', 'City'], 
+        ['kitchen', 'Kitchen']
+    ]
+
+    for (arr of optionsList) {
+        temp = document.createElement('div');
+        temp.innerHTML = `<option value="${arr[0]}" selected>${arr[1]}</option>`;
+        option = temp.querySelector('option');
+        itemsList.insertAdjacentElement('beforeEnd', option);
+    }
+
+
+    /* * * Add Event Listners   * *  */
+    
+    /* Open/close select list on click */
+    selectInput.addEventListener('click', function () {
+        let isClicked = Number(this.getAttribute('data-clicked'));
+        console.log(isClicked);
+        isClicked = isClicked == 0 ? 1 : 0;
+        console.log(isClicked);
+        this.setAttribute('data-clicked', isClicked);
+    });
+    
+    /* Close list when user clicks outside */
+    document.addEventListener('click', e => {
+        element = selectInput;
+        if (!element.contains(e.target)) {
+            element.setAttribute('data-clicked', 0);
+        };
+    });
+
+    /* Select option from the list */
+    selectInput.querySelectorAll('option').forEach(
+        option => option.addEventListener('click', function () {
+            /* Set label to selected option */
+            selectLabel = this.parentElement.parentElement.querySelector('.select-input > .select-label');
+            selectLabel.textContent = this.textContent;
+
+            /* Load page content based on selection */
+            loadCards(this.value);
+
+            /* Format selected option */
+            this.parentElement.querySelectorAll('option').forEach(option => option.style.backgroundColor = 'unset');
+            this.style.backgroundColor = 'pink';
+        })
+    );
+
+
+    /* End */
+
+    return customSelect;
+
+}
+
+
+/* Expand/Collapse select list on click */
+document.querySelector('.custom-select > .select-input').addEventListener('click', function () {
+    isClicked = Number(this.getAttribute('data-clicked'));
+    console.log(isClicked);
+    isClicked = isClicked == 0 ? 1 : 0;
+    console.log(isClicked);
+    this.setAttribute('data-clicked', isClicked);
+});
+
+/* Select option from the list */
+document.querySelectorAll('.custom-select > .select-items > option').forEach(
+    option => option.addEventListener('click', function () {
+        /* Set label to selected option */
+        selectLabel = this.parentElement.parentElement.querySelector('.select-input > .select-label');
+        selectLabel.textContent = this.textContent;
+
+        /* Load page content based on selection */
+        loadCards(this.value);
+
+        /* Format selected option */
+        this.parentElement.querySelectorAll('option').forEach(option => option.style.backgroundColor = 'unset');
+        this.style.backgroundColor = 'pink';
+    })
+);
+
+/* Close list when user clicks outside */
+document.addEventListener('click', e => {
+    element = document.querySelector('.custom-select > .select-input');
+    if (!element.contains(e.target)) {
+        element.setAttribute('data-clicked', 0);
+    };
+});
+
+
+
+
+
+</script>
+
+</html>

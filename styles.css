@@ -1,0 +1,180 @@
+<style>
+
+html {
+    height: 100%;
+}
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    margin: 0px;
+}
+
+
+
+div#page-content {
+    margin-top: 80px;
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+}
+
+div#page-footer {
+    flex: 0 0 auto;
+    height: 50px;
+    bottom: 0px;
+    height: 50px;
+    background-color: rgb(245,245,245);
+}
+
+div#page-footer p {
+    bottom: 0px;
+}
+
+/* * * Page header * * */
+
+div#page-header {
+    position: fixed;
+    flex: 0 0 auto;
+    display: flex;
+    width: 100%;    
+    height: 60px;
+    background-color: rgb(245,245,245);
+}
+
+/* Header selects */
+#header-selects {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: 10px;
+}
+ 
+/* Header logo */
+
+div#header-logo {
+    margin-left: auto;
+}
+
+div#header-logo img {
+    max-height: 80px;
+}
+
+/* Header buttons */
+
+div#header-buttnos {
+    display: flex;
+    margin-left: 20px;
+}
+
+div#header-buttnos .header-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    font-size: 16px;
+}
+
+div#header-buttnos div:nth-last-child(n+2) {
+    border-right-width: 1px;
+    border-right-style: solid;    
+    border-image: linear-gradient(transparent 10%, #888, transparent 90%) 1 100%;    
+}
+
+div#header-buttnos .header-btn:hover {
+    color: rgb(80,80,180);
+    cursor: pointer;
+}
+
+
+
+
+
+/* Page content */
+
+#select-container {
+    display: flex;
+    flex: 0 0 auto;
+    height: 50px;
+    background-color: rgb(235,235,210);
+    align-items: center;
+}
+
+#select-content {
+    margin-left: 1%;
+    width: 200px;
+    height: 30px;
+}
+
+/* Cards container */
+
+div#cards-container {
+    flex: 1 0 auto;
+    width: 80%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    padding-top: 20px;
+    margin: auto;
+    background-color: pink;
+}
+
+/* Style visual card */
+
+div.card {
+    flex: 0 0 auto;
+    box-sizing: content-box;
+    height: 320px;
+    width: 400px;
+    margin-bottom: 20px;
+}
+
+.card-image-container {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 280px;
+    width: 400px;
+    background-color: white;
+}
+
+div.card > div.card-image-container > img{
+    box-sizing: border-box;
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+    padding: 20px;    
+}
+
+.card-label-container {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: 50px;
+    visibility: hidden;
+}
+
+.card:hover .card-label-container {
+    visibility: visible;
+}
+
+.card-label {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    height: 40px;
+    border: 1px solid rgb(195,195,195);    
+    border-radius: 5px;
+    background-color: rgb(235,235,235);    
+}
+
+.card-label span {
+    margin-left: 10px;
+}
+
+</style>
