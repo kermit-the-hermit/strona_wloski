@@ -1,5 +1,6 @@
-// Definitions
+// DEFINITONS
 
+// Database mock-up JSON 
 let dataset_JSON = [{'ITEM_ID': '1', 'ITEM_NAME': 'museum', 'THEMATIC_SET': 'city', 'ART_SINGULAR': 'il', 'IT_SINGULAR': 'museo', 'ART_PLURAL': 'i', 'FILE_PATH': '/images/city', 'FILE_NAME': 'museum.jpg'},{'ITEM_ID': '2', 'ITEM_NAME': 'restaurant', 'THEMATIC_SET': 'city', 'ART_SINGULAR': 'il', 'IT_SINGULAR': 'ristorante', 'ART_PLURAL': 'i', 'FILE_PATH': '/images/city', 'FILE_NAME': 'restaurant.jpg'},{'ITEM_ID': '3', 'ITEM_NAME': 'coffe shop', 'THEMATIC_SET': 'city', 'ART_SINGULAR': 'il', 'IT_SINGULAR': 'caffè', 'ART_PLURAL': 'i', 'FILE_PATH': '/images/city', 'FILE_NAME': 'coffe-shop.jpg'},{'ITEM_ID': '4', 'ITEM_NAME': 'fruit shop', 'THEMATIC_SET': 'city', 'ART_SINGULAR': 'il', 'IT_SINGULAR': 'frutivendolo', 'ART_PLURAL': 'i', 'FILE_PATH': '/images/city', 'FILE_NAME': 'fruit-shop.jpg'},{'ITEM_ID': '5', 'ITEM_NAME': 'supermarket', 'THEMATIC_SET': 'city', 'ART_SINGULAR': 'il', 'IT_SINGULAR': 'supermercato', 'ART_PLURAL': 'i', 'FILE_PATH': '/images/city', 'FILE_NAME': 'supermarket.png'},{'ITEM_ID': '6', 'ITEM_NAME': 'gym', 'THEMATIC_SET': 'city', 'ART_SINGULAR': 'la', 'IT_SINGULAR': 'palestra', 'ART_PLURAL': 'le', 'FILE_PATH': '/images/city', 'FILE_NAME': 'gym.jpg'},{'ITEM_ID': '7', 'ITEM_NAME': 'historic city center', 'THEMATIC_SET': 'city', 'ART_SINGULAR': 'il', 'IT_SINGULAR': 'centro storico', 'ART_PLURAL': '', 'FILE_PATH': '/images/city', 'FILE_NAME': 'historic-city-center.jpg'},{'ITEM_ID': '8', 'ITEM_NAME': 'chair', 'THEMATIC_SET': 'kitchen', 'ART_SINGULAR': 'la', 'IT_SINGULAR': 'sedia', 'ART_PLURAL': '', 'FILE_PATH': '/images/kitchen', 'FILE_NAME': 'chair.png'},{'ITEM_ID': '9', 'ITEM_NAME': 'fork', 'THEMATIC_SET': 'kitchen', 'ART_SINGULAR': 'la', 'IT_SINGULAR': 'forchetta', 'ART_PLURAL': '', 'FILE_PATH': '/images/kitchen', 'FILE_NAME': 'fork.png'},{'ITEM_ID': '10', 'ITEM_NAME': 'firdge', 'THEMATIC_SET': 'kitchen', 'ART_SINGULAR': 'il', 'IT_SINGULAR': 'frigo', 'ART_PLURAL': '', 'FILE_PATH': '/images/kitchen', 'FILE_NAME': 'fridge.jpg'},{'ITEM_ID': '11', 'ITEM_NAME': 'kitchen table', 'THEMATIC_SET': 'kitchen', 'ART_SINGULAR': 'il', 'IT_SINGULAR': 'tavolo', 'ART_PLURAL': '', 'FILE_PATH': '/images/kitchen', 'FILE_NAME': 'kitchen-table.png'},{'ITEM_ID': '12', 'ITEM_NAME': 'sink', 'THEMATIC_SET': 'kitchen', 'ART_SINGULAR': 'il', 'IT_SINGULAR': 'lavello', 'ART_PLURAL': '', 'FILE_PATH': '/images/kitchen', 'FILE_NAME': 'sink.png'},{'ITEM_ID': '13', 'ITEM_NAME': 'knife', 'THEMATIC_SET': 'kitchen', 'ART_SINGULAR': 'il', 'IT_SINGULAR': 'coltello', 'ART_PLURAL': '', 'FILE_PATH': '/images/kitchen', 'FILE_NAME': 'table-knife.png'},{'ITEM_ID': '14', 'ITEM_NAME': 'spoon', 'THEMATIC_SET': 'kitchen', 'ART_SINGULAR': 'il', 'IT_SINGULAR': 'cucchiaio', 'ART_PLURAL': '', 'FILE_PATH': '/images/kitchen', 'FILE_NAME': 'table-spoon.jpeg'},{'ITEM_ID': '15', 'ITEM_NAME': 'teaspoon', 'THEMATIC_SET': 'kitchen', 'ART_SINGULAR': 'il', 'IT_SINGULAR': 'cucchiaino', 'ART_PLURAL': '', 'FILE_PATH': '/images/kitchen', 'FILE_NAME': 'teaspoon.jpg'},{'ITEM_ID': '16', 'ITEM_NAME': 'plate', 'THEMATIC_SET': 'kitchen', 'ART_SINGULAR': 'il', 'IT_SINGULAR': 'piatto', 'ART_PLURAL': '', 'FILE_PATH': '/images/kitchen', 'FILE_NAME': 'plate.jpg'}];
 
 
@@ -81,3 +82,77 @@ function loadCards (thematicSet) {
 }
 
 
+
+
+/* * * Create custom select * * */
+
+function createCustomSelect (selectId, inputLabel, optionsList = [], callBackFn = null) {
+
+    /* Create template for custom select element */
+
+    temp = document.createElement('div');
+    temp.innerHTML = 
+    `<div id="${selectId}" class="custom-select">
+        <div class="select-input" tabindex="0" data-clicked="0">
+            <div class="select-label">${inputLabel}</div>
+            <div class="select-arrow">
+                <i class="fa fa-caret-down" aria-hidden="true"></i>
+            </div>
+        </div>
+
+        <div class="select-items" tabindex="0"></div>
+    </div>
+    `;
+
+    customSelect = temp.querySelector('.custom-select');
+    selectInput = customSelect.querySelector('.select-input');
+    itemsList = customSelect.querySelector('.select-items');
+
+    /* Add options */
+
+    for (arr of optionsList) {
+        temp = document.createElement('div');
+        temp.innerHTML = `<option value="${arr[0]}" selected>${arr[1]}</option>`;
+        option = temp.querySelector('option');
+        itemsList.insertAdjacentElement('beforeEnd', option);
+    }
+
+
+    /* * * Add Event Listners   * *  */
+    
+    /* Open/close select list on click */
+    selectInput.addEventListener('click', function () {
+        let isClicked = Number(this.getAttribute('data-clicked'));
+        isClicked = isClicked == 0 ? 1 : 0;
+        this.setAttribute('data-clicked', isClicked);
+    });
+    
+    /* Close list when user clicks outside */
+    document.addEventListener('click', e => {
+        element = selectInput;
+        if (!element.contains(e.target)) {
+            element.setAttribute('data-clicked', 0);
+        };
+    });
+
+    /* Select option from the list */
+    itemsList.querySelectorAll('option').forEach(
+        option => option.addEventListener('click', function () {
+            /* Set label to selected option */
+            selectLabel = this.parentElement.parentElement.querySelector('.select-input > .select-label');
+            selectLabel.textContent = this.textContent;
+
+            /* Callback function that executes after selecting an option */
+            callBackFn(this.value);
+
+            /* Format selected option */
+            this.parentElement.querySelectorAll('option').forEach(option => option.style.backgroundColor = 'unset');
+            this.style.backgroundColor = 'pink';
+        })
+    );
+    
+
+    /* End */
+    return customSelect;
+
+}
